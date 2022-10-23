@@ -2,6 +2,7 @@ class Solution {
     public int[] searchRange(int[] nums, int target) {
         int first = leftMost(nums, target);
         if(first != -1){
+            //System.out.println("first: "+first);
             int second = rightMost(nums, target, first);
             return new int[]{first, second};
         }
@@ -10,36 +11,41 @@ class Solution {
     
     int rightMost(int [] nums, int target, int minIndex){
         int max = minIndex;
-        for( int i = minIndex + 1; i < nums.length && i >= 0; i++){
-            if(nums[i] == target ){
-                max = i;
+        int l = minIndex, r = nums.length-1;
+        while(l <= r){
+            int m = (l + r)/2;
+            if(nums[m] == target){
+                if(m >= max){
+                    max = m;
+                    l = m + 1;
+                    continue;
+                }
+            }else if(nums[m] < target){
+                l = m + 1;
+            }else{
+                r = m - 1;
             }
         }
         return max;
     }
     
     int leftMost(int[] nums, int target){
-        int l = 0, r = nums.length-1;
+        int l = 0, r = nums.length-1, min = Integer.MAX_VALUE;
         while(l <= r ){
             int m = (l + r)/2;
             if(nums[m] == target){
-                int min = m;
-                for(int i = m-1; i >= 0; i-- ){
-                    if(nums[i] == target){
-                        min = i;
-                        continue;
-                    }
+                if(m < min){
+                    min = m;
+                    r = m - 1;
+                    continue;
                 }
-                return min;
-            }
-            
-            if(nums[m] < target){
+            }else if(nums[m] < target){
                 l = m + 1;
             }else{
                 r = m - 1;
             }
         }
-        return -1;
+        return ( min == Integer.MAX_VALUE ) ? -1 : min;
     }
     
 }
