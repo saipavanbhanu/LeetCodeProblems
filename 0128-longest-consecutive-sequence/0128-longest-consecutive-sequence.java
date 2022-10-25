@@ -1,9 +1,10 @@
 class Solution {
     public int longestConsecutive(int[] nums) {
-        TreeSet<Integer> ts = new TreeSet<>();
-        for(int i = 0; i < nums.length; i++){
-            ts.add(nums[i]);
-        }
+        //TreeSet<Integer> ts = new TreeSet<Integer>(Arrays.asList(nums));
+        
+        TreeSet<Integer> ts = Arrays.stream(nums)
+            .boxed()
+            .collect(Collectors.toCollection(TreeSet::new));
         
         int max = Integer.MIN_VALUE;
         int start = Integer.MIN_VALUE;
