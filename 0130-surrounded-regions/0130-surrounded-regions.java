@@ -1,92 +1,52 @@
-class Node {
-    int i, j;
-    Node(int i, int j) {
-        this.i = i;
-        this.j = j;
-    }
-    public String toString(){
-        String str = "("+i+","+j+") ";
-        return str;
-    }
-}
 class Solution {
-    boolean borderFlag;
-    boolean[][] visited;
     public void solve(char[][] board) {
-        int rows = board.length, cols = board[0].length;
-        visited = new boolean[rows][cols];
-        List < Node > tList = null;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                if (!visited[i][j]) {
-                    if (board[i][j] == 'X') {
-                        visited[i][j] = true;
-                    } else {
-                        borderFlag = false;
-                        tList = new ArrayList < > ();
-                        dfs(i, j, tList, board);
-                        //System.out.println(tList);
-                        //System.out.println(borderFlag);
-                        if (borderFlag == false) {
-                            for (Node n: tList) {
-                                board[n.i][n.j] = 'X';
-                            }
-                        }
-                    }
+        int rows = board.length; int cols = board[0].length;
+        for(int i = 0; i < cols; i++){
+            if(board[0][i] == 'O'){
+                dfs(0, i, board);
+            }
+        }
+        
+        for(int i = 1; i < rows; i++){
+            if(board[i][cols-1] == 'O'){
+                dfs(i, cols-1, board);
+            }
+        }
+        
+        for(int i = cols-2; i >= 0; i--){
+            if(board[rows-1][i] == 'O'){
+                dfs(rows-1, i, board);
+            }
+        }
+        
+        for(int i = rows-2; i >= 0; i--){
+            if(board[i][0] == 'O'){
+                dfs(i, 0, board);
+            }
+        }
+        //iterate over the m/n matrix and change the values
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < cols; j++){
+                if(board[i][j] == 'T'){
+                    board[i][j] = 'O';
+                }else if(board[i][j] == 'O'){
+                    board[i][j] = 'X';
                 }
             }
         }
     }
-
-    void dfs(int i, int j, List < Node > tList, char[][] board) {
-        int rows = board.length;
-        int cols = board[0].length;
-        visited[i][j] = true;
-        if(i == 0 || i == rows-1 || j == 0 || j == cols-1)
-            borderFlag = true;
-        
-        tList.add(new Node(i, j));
-        int k = i - 1;
-        int l = j;
-        if (k >= 0 && board[k][l] == 'O' && visited[k][l] == false) {
-            if (k == 0) {
-                borderFlag = true;
+    
+    void dfs(int r, int c, char[][] board){
+        int pos[][] = { {-1,0}, {0,1}, {1,0}, {0,-1}};
+        int rows = board.length; int cols = board[0].length;
+        board[r][c] = 'T';
+        for(int arr[] : pos ){
+            int i = r + arr[0];
+            int j = c + arr[1];
+            if(i >= 0 && i < rows && j >= 0 && j < cols && board[i][j] == 'O'){
+                dfs(i, j, board);
             }
-            dfs(k, l, tList, board);
-        }
-
-        k = i;
-        l = j + 1;
-        if (l < cols && board[k][l] == 'O' && visited[k][l] == false) {
-            if (l == cols - 1) {
-                borderFlag = true;
-            }
-
-            dfs(k, l, tList, board);
-
-        }
-
-        k = i + 1;
-        l = j;
-        if (k < rows && board[k][l] == 'O' && visited[k][l] == false) {
-            if (k == rows - 1) {
-                borderFlag = true;
-            }
-
-            dfs(k, l, tList, board);
-
-        }
-
-        k = i;
-        l = j - 1;
-        if (l >= 0 && board[k][l] == 'O' && visited[k][l] == false) {
-            if (l == 0) {
-                borderFlag = true;
-            }
-
-            dfs(k, l, tList, board);
-
         }
     }
-
+    
 }
