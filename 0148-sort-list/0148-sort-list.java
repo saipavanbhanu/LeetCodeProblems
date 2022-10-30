@@ -74,17 +74,19 @@ class Solution {
                 }
             }
             
-            while(first != null){
-                ListNode next = first.next;
-                ll = append(ll, first);
-                first = next;
-            }
+//             while(first != null){
+//                 ListNode next = first.next;
+//                 ll = append(ll, first);
+//                 first = next;
+//             }
             
-            while(second != null){
-                ListNode next = second.next;
-                ll = append(ll, second);
-                second = next;
-            }
+//             while(second != null){
+//                 ListNode next = second.next;
+//                 ll = append(ll, second);
+//                 second = next;
+//             }
+            
+            ll.tail.next = (first != null)?first: second;
             
             return ll.head;
         }
