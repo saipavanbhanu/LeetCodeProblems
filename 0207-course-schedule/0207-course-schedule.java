@@ -18,10 +18,10 @@ class Solution {
         initGraph(g, pre);
         
         boolean visited[] = new boolean[v];
+        boolean stack[] = new boolean[v];
         for(int i = 0; i < v; i++){
             if(visited[i] == false){
                 visited[i] = true;
-                boolean stack[] = new boolean[v];
                 if(dfs(i, stack, visited, g)){
                     return false;    
                 }  //dfs will return true if it is cyclic
